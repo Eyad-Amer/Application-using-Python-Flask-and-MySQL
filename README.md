@@ -749,101 +749,86 @@
 
 ### Dockerize the application with Docker and Docker Compose
 
-##### - Update the package index and install dependencies:
-    sudo apt update
-    sudo apt install apt-transport-https ca-certificates curl software-properties-common
-
-##### - Add Docker's official GPG key:
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-
-##### - Add the Docker repository:
-    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-##### - Install Docker:
-    sudo apt update
-    sudo apt install docker-ce
+##### - Install Docker on your Azure VM:
+    curl -fsSL https://get.docker.com -o get-docker.sh
+    sudo sh get-docker.sh
+    sudo usermod -aG docker $USER
 
 ##### - Install Docker Compose:
-    sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo apt-get install docker-compose
 
-##### - Make the Docker Compose binary executable:
-    sudo chmod +x /usr/local/bin/docker-compose
-
-##### - Create a Dockerfile in the project directory:
+##### - In your Flask application directory, create a Dockerfile:
     touch Dockerfile
-
-##### - Open the Dockerfile in your preferred text editor:
     nano Dockerfile
 
-##### - Add the necessary Docker instructions to define your application's container environment. For a Python Flask app, you might use the following:
-    # Use an official Python runtime as a parent image
+##### - Add the following contents to the Dockerfile:
+    # Use the official Python image as the base image
     FROM python:3.8-slim
     
-    # Set the working directory to /app
+    # Set the working directory
     WORKDIR /app
     
-    # Copy the current directory contents into the container at /app
-    COPY . /app
+    # Copy requirements.txt into the container
+    COPY requirements.txt .
     
-    # Install any needed packages specified in requirements.txt
-    RUN apt-get update && \
-        apt-get install -y gcc libmariadb-dev-compat libmariadb-dev
+    # Install the dependencies
+    RUN pip install --no-cache-dir -r requirements.txt
     
-    RUN pip install --trusted-host pypi.python.org -r requirements.txt
+    # Copy the rest of the application code into the container
+    COPY . .
     
-    # Make port 5000 available to the world outside this container
+    # Expose the port the app will run on
     EXPOSE 5000
     
-    # Define environment variable
-    ENV NAME World
-    
-    # Run app.py when the container launches
+    # Start the application
     CMD ["python", "app.py"]
 
-##### - Create a 'requirements.txt' file:
-    Flask==2.1.1
-    Flask-SQLAlchemy==2.5.1
-    Flask-WTF==1.1.1
-    mysqlclient
 
-##### - Create a docker-compose.yml file in the project directory.
+##### - In the same directory, create a docker-compose.yml file:
     touch docker-compose.yml
-
-##### - Open the docker-compose.yml in your preferred text editor:
     nano docker-compose.yml
 
-    version: '3'
+##### - Add the following contents to the docker-compose.yml file:
+    version: "3.3"
     services:
       web:
         build: .
         ports:
           - "5000:5000"
-      mysql:
-        image: "mysql:5.7"
+        depends_on:
+          - db
+      db:
+        image: "mysql:8.0"
         environment:
-          MYSQL_ROOT_PASSWORD: EyadAmer2022
-          MYSQL_DATABASE: geekprofile
-          MYSQL_USER: EyadAmer
-          MYSQL_PASSWORD: EyadAmer2022
+          MYSQL_ROOT_PASSWORD: your_mysql_root_password
+          MYSQL_DATABASE: your_database_name
+          MYSQL_USER: your_database_user
+          MYSQL_PASSWORD: your_database_password
         volumes:
-          - "./mysql-data:/var/lib/mysql"
-        ports:
-          - "3307:3306"
+          - "db_data:/var/lib/mysql"
+    volumes:
+      db_data:
 
-#### - Build and run the Docker containers
-##### - In the terminal, navigate to the project directory.
+###### - Replace your_mysql_root_password, your_database_name, your_database_user, and your_database_password with the respective values you used for your MySQL database.
 
-##### - Build the Docker containers:
-    sudo docker-compose build
+##### - Run your Docker Compose setup:
+    sudo docker-compose up -d
 
-<img width="673" alt="build docker" src="https://user-images.githubusercontent.com/40535130/233807897-93082b7c-14ae-40fc-87c5-e299b458f129.png">
+<img width="671" alt="Docker done" src="https://user-images.githubusercontent.com/40535130/235346593-2c6ad9fe-92c1-4dd3-8172-c059b86fd2c5.png">
 
 
-##### - If the build is successful, you can start the Docker container using the following command:
-    sudo docker-compose up
+##### - Here's a summary of what happened:
+1. The Dockerfile was used to build an image, which includes installing the necessary packages and dependencies from the requirements.txt file.
+2. The docker-compose.yml file defined two services: geeksprofile-db-1 (the database) and geeksprofile-web-1 (the web application).
+3. A new network (geeksprofile_default) was created for the containers to communicate with each other.
+4. A new volume (geeksprofile_db_data) was created to persist the database data.
+5. The geeksprofile-db-1 container was started, running the database service.
+6. The geeksprofile-web-1 container was started, running the web application service.
 
-<img width="595" alt="compuse" src="https://user-images.githubusercontent.com/40535130/233809264-41cba892-d897-469b-a0dd-2043f1b8f190.png">
+##### - To view the logs for the web service:
+    sudo docker-compose logs web
 
+<img width="673" alt="run in docker" src="https://user-images.githubusercontent.com/40535130/235346890-8fda3c6b-a17d-4c29-8ab0-c373860b5f53.png">
 ------------
 ### - Create pipeline from build to deploy using Azure DevOps
 
