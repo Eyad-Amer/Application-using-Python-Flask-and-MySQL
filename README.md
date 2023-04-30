@@ -832,23 +832,48 @@
 ------------
 ### - Create pipeline from build to deploy using Azure DevOps
 
+#### -  Push the repository to the source control system supported by Azure DevOps.
+
+####  - Create a Build Pipeline for the Docker image:
 ##### - Log in to your Azure DevOps account and go to your project.
 ##### - Click on 'Pipelines' in the left-hand menu, then click on "Create Pipeline".
-<img width="859" alt="create pipeline" src="https://user-images.githubusercontent.com/40535130/233810424-18089a1e-bc40-418c-aed8-85e0ad86fe50.png">
+<img width="860" alt="Create pipeline" src="https://user-images.githubusercontent.com/40535130/235356351-f37f5aa3-a735-4abc-bf91-8f12b04e4d34.png">
+
 
 ##### - Choose the location of your code, which is 'Azure Repos Git' in this case.
-<img width="860" alt="pipeline repo" src="https://user-images.githubusercontent.com/40535130/233810447-82da2f9e-fbf2-454d-a0b2-6f663001f4da.png">
+<img width="859" alt="where the code" src="https://user-images.githubusercontent.com/40535130/235356472-76a1888a-495d-422c-87bb-122df8da4173.png">
+
 
 ##### - Select your repository and click "Continue".
-<img width="859" alt="chose repo" src="https://user-images.githubusercontent.com/40535130/233810638-9a564963-9477-4555-83fe-afbb9d13eb16.png">
+<img width="860" alt="select a repo" src="https://user-images.githubusercontent.com/40535130/235356508-e867054a-892c-4288-8292-6763e4283480.png">
 
-##### - Configure your pipeline by choosing "Docker":
 
-![configure your pipeline](https://user-images.githubusercontent.com/40535130/233854816-143ff0ad-4397-4175-8c72-0dae87efad1f.png)
+##### - Configure your pipeline by choosing "Docker" template:
+
+<img width="859" alt="docker" src="https://user-images.githubusercontent.com/40535130/235361865-c70882bc-cf42-46ad-9b0c-e407c28b54c7.png">
 
 
 ##### - Save and run the pipeline. The pipeline will build and push the Docker images to your Azure Container Registry, and then deploy the application to Azure App Service.
 
-![ci-cd](https://user-images.githubusercontent.com/40535130/233854780-117b5ede-3cb3-46f0-9616-19f5735e2d2b.png)
+<img width="859" alt="pipeline done" src="https://user-images.githubusercontent.com/40535130/235362518-e4c6703e-7efd-49ee-87d8-15a3d3a7ded2.png">
+
+
+#### - Create a Release Pipeline for deploying the Docker container:
+
+##### - In your Azure DevOps project, navigate to the "Pipelines" section and select "Releases."
+
+<img width="860" alt="releases" src="https://user-images.githubusercontent.com/40535130/235358742-f4161a24-6f07-4d2a-bad6-04077c046749.png">
+
+
+##### - Click on "New pipeline" to create a new release pipeline.
+##### - Choose a template based on your target environment for deployment.
+
+
+
+
+
+
+
+
 
 
