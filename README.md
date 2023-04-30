@@ -868,11 +868,22 @@
 ##### - Click on "New pipeline" to create a new release pipeline.
 ##### - Choose a template based on your target environment for deployment.
 
+<img width="859" alt="releasesss" src="https://user-images.githubusercontent.com/40535130/235371425-72e16087-f3ec-464e-bdbb-107122c78ca8.png">
 
+##### - In the "Artifacts" section, click "Add an artifact" and select the "Build" source type. Choose the build pipeline you created earlier as the source of the artifacts.
 
+<img width="858" alt="add artifact" src="https://user-images.githubusercontent.com/40535130/235372786-d31f2521-8874-4649-8c6e-19605989c5be.png">
 
+<img width="859" alt="build artifact" src="https://user-images.githubusercontent.com/40535130/235372818-db38699b-ed84-43f7-bec4-cc628338588c.png">
 
+##### - Configure the deployment tasks and settings according to your target environment and project requirements.
 
+##### - Save the release pipeline, and create a new release to test the deployment process.
+
+#### - Automate the CI/CD process:
+##### - In your build pipeline, enable the trigger for continuous integration. This ensures that the build pipeline runs automatically whenever changes are pushed to the source repository.
+
+##### - In your release pipeline, enable the continuous deployment trigger. This will automatically create a new release and deploy the application whenever a successful build is completed.
 
 
 
