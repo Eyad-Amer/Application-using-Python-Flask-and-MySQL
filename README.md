@@ -671,10 +671,26 @@
     git clone <your_repository_url>
     cd <your_repository_name>
 
+##### - Create requirements.txt file that lists all the Python packages required for your application:
+
+###### 1. In your project directory, create a new file called requirements.txt:
+    touch requirements.txt
+
+###### 2. Open the file in a text editor, such as nano:
+    nano requirements.txt
+
+###### 3. Add the required packages to the file:
+    Flask
+    Flask-MySQLdb
+
 ##### - Set up a Python virtual environment and install the required packages:
-    python3 -m venv venv
-    source venv/bin/activate
-    pip install -r requirements.txt
+    	sudo apt install python3.8-venv
+        python3 -m venv venv
+        source venv/bin/activate
+		sudo apt-get update
+		sudo apt-get install libmysqlclient-dev
+		pip install wheel
+        pip install -r requirements.txt
 
 ##### Configure the MySQL server and create the necessary database and tables:
 
@@ -702,31 +718,32 @@
       PRIMARY KEY (id)
     ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8MB4;
 
+##### - Update your Flask application's database configuration with the MySQL credentials you created.
+
+##### - To access the Flask application running on your remote Azure VM, you need to use the public IP address of the VM and update the Flask app to listen on all available IP addresses.
+
+###### - Update the app.py file to bind the server to 0.0.0.0, which allows connections from any IP address. Open the file in a text editor:
+    app.run(host='0.0.0.0', port=5000)
 
 
+##### - Run the Flask application :
+		python app.py
 
+##### - In your web browser, use the public IP address and the port number to access the Flask application. Replace your_vm_public_ip with the actual IP address:
 
+    http://your_vm_public_ip:5000
 
+##### - Login Page:
+<img width="859" alt="running on linux" src="https://user-images.githubusercontent.com/40535130/235344397-8cb316a4-2b61-4256-a467-8e12182a3392.png">
 
-##### - Install the necessary Python packages on the Linux server:
-    pip3 install Flask
-    pip3 install Flask-MySQLdb
+##### - successfully registered:
+<img width="859" alt="reqister successfully" src="https://user-images.githubusercontent.com/40535130/235344493-15f4af33-fa2b-49a9-bb87-7739412d18ab.png">
 
-##### - Run the Flask application on the Linux server:
-    export FLASK_APP=app.py
-    export FLASK_ENV=development
-    flask run --host=0.0.0.0
+##### - Index Page:
+<img width="860" alt="Index Page" src="https://user-images.githubusercontent.com/40535130/235344577-7d91cc4a-4c61-4433-9ee3-bc8743ac03f1.png">
 
-###### - Your profile application should now be running on your Azure Linux server, and you can access it using the server's public IP address followed by the port number, http://<SERVER_IP>:5000.
-
-<img width="861" alt="test1" src="https://user-images.githubusercontent.com/40535130/233801819-7baeb9f9-7a5b-4e66-bb26-17e3b1776579.png">
-
-
-<img width="859" alt="test2" src="https://user-images.githubusercontent.com/40535130/233801827-e1b17e23-7664-4392-941a-89f79459b84e.png">
-
-<img width="839" alt="welcome" src="https://user-images.githubusercontent.com/40535130/233896020-45872f7e-8e4e-46db-85bf-3b4023709074.png">
-
-<img width="891" alt="database table" src="https://user-images.githubusercontent.com/40535130/233896043-00f64eec-804d-4af3-802e-36eba263b214.png">
+##### - Display Page:
+<img width="860" alt="Display Page" src="https://user-images.githubusercontent.com/40535130/235344596-e294109a-e20c-4ba6-a5cf-9dfc32137a78.png">
 
 ------------
 
