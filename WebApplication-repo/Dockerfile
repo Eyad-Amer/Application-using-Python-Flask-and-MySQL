@@ -1,0 +1,16 @@
+FROM python:3.8-slim
+
+# Add build-essential and default-libmysqlclient-dev
+RUN apt-get update && apt-get install -y libmariadb-dev-compat libmariadb-dev build-essential default-libmysqlclient-dev
+
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+CMD ["python", "app.py"]
+
